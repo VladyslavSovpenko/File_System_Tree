@@ -21,7 +21,7 @@ public class Node {
     private List<Node> children;
 
     public long calcSize() {
-        return this.size;
+        return calcSize(this);
     }
 
     public long calcSize(Node node) {
@@ -37,5 +37,13 @@ public class Node {
 
     public void setChildren(List<Node> children) {
         this.children = children;
+    }
+
+    public List<Node> getChildren() {
+        return children;
+    }
+
+    public String getName() {
+        return name;
     }
 }
