@@ -12,8 +12,10 @@ public class Main {
         List<Node> tree = fileReaderTree.read();
         service.getDirectorySize("root", tree);
         service.getDirectorySize("root/dir_aa", tree);
-        service.getDirectorySize("root/dir_mn", tree);
-        service.getDirectorySize("root/dir_mn/dir_bb/dir_bb", tree);
+//        service.getDirectorySize("root/dir_mn", tree);
+//        service.getDirectorySize("root/dir_mn/dir_bb/dir_bb", tree);
+
+        service.getFileDuplicates(tree);
 
 
     }

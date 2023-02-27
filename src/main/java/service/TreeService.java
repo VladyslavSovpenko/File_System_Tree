@@ -2,10 +2,7 @@ package service;
 
 import entity.Node;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*
@@ -58,7 +55,27 @@ public class TreeService {
         System.out.println(mainNode.calcSize());
     }
 
-    public String getFileDuplicates() {
-        return null;
+    public void getFileDuplicates(List<Node> tree) {
+        Set<Node> seen = new HashSet<>();
+        getAllFiles(tree).stream()
+                .filter(e -> !seen.add(e))
+                .forEach(e -> System.out.println(e.getName()));
+    }
+
+    private Queue<Node> getAllFiles(List<Node> tree) {
+        Queue<Node> children = new ArrayDeque<>();
+        children.add(tree.get(0));
+        while (!children.isEmpty() && !children.stream()
+                .filter(node -> node.getType().equals(Node.NodeType.FOLDER))
+                .collect(Collectors.toList()).isEmpty()) {
+
+            if (children.peek().getType() == Node.NodeType.FOLDER) {
+                Node node = children.remove();
+
+                node.getChildren().stream()
+                        .forEach(node1 -> children.add(node1));
+            }
+        }
+        return children;
     }
 }

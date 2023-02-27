@@ -12,19 +12,13 @@ public class FileReaderTree {
 
     private ArrayList<Node> tree;
 
-
     public List<Node> read() {
         tree = new ArrayList<>();
-
-
         try (BufferedReader reader = new BufferedReader(new FileReader("tree.txt"))) {
-
             String line = reader.readLine();
-
             if (line.contains("|")) {
                 addFolder(line, reader);
             }
-
         } catch (IOException e) {
             System.out.println("Не найден файл tree.txt. Уточните путь файла.");
             e.printStackTrace();
@@ -46,7 +40,6 @@ public class FileReaderTree {
 
     private int getFileContains(String line) {
         return Integer.valueOf(line.substring(line.indexOf("|") + 1));
-
     }
 
     private List<Node> addFiles(BufferedReader reader, int fileContains) {
@@ -66,7 +59,6 @@ public class FileReaderTree {
                         .size(Long.valueOf(fileLine.substring(fileLine.indexOf(":") + 1)))
                         .build());
             } else if (fileLine.contains("|")) {
-//                addFolder(fileLine,reader);
                 Node folder = createFolder(fileLine);
                 folder.setChildren(addFiles(reader, getFileContains(fileLine)));
                 children.add(folder);
@@ -74,7 +66,6 @@ public class FileReaderTree {
         }
         return  children;
     }
-
 
     private Node createFolder(String line) {
         return Node.builder()

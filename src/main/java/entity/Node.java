@@ -1,12 +1,14 @@
 package entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Builder
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Node {
@@ -33,17 +35,5 @@ public class Node {
             res += calcSize(child);
         }
         return res;
-    }
-
-    public void setChildren(List<Node> children) {
-        this.children = children;
-    }
-
-    public List<Node> getChildren() {
-        return children;
-    }
-
-    public String getName() {
-        return name;
     }
 }
