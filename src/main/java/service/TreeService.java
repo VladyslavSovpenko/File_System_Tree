@@ -2,7 +2,11 @@ package service;
 
 import entity.Node;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /*
@@ -56,26 +60,47 @@ public class TreeService {
     }
 
     public void getFileDuplicates(List<Node> tree) {
-        Set<Node> seen = new HashSet<>();
-        getAllFiles(tree).stream()
-                .filter(e -> !seen.add(e))
-                .forEach(e -> System.out.println(e.getName()));
+        List<Node> allFiles = getAllFiles(tree);
+
+        Map<Node, List<Integer>> map = new HashMap<>();
+
+        for (Node node:allFiles){
+           map.put(node, new ArrayList<>());
+        }
+        int a=0;
+
+        for (Node node:allFiles){
+            List<Integer> integerList = map.get(node);
+            integerList.add(a);
+            a++;
+        }
+        for (Map.Entry<Node, List<Integer>> entry:map.entrySet()){
+            if (entry.getValue().size()>1){
+                System.out.println((entry.getKey().getName()+":"+entry.getKey().getSize()+"\n").repeat(entry.getValue().size()));
+            }
+        }
     }
 
-    private Queue<Node> getAllFiles(List<Node> tree) {
-        Queue<Node> children = new ArrayDeque<>();
-        children.add(tree.get(0));
-        while (!children.isEmpty() && !children.stream()
+    private List<Node> getAllFiles(List<Node> tree) {
+        List<Node> folders = new ArrayList<>();
+        List<Node> result = new ArrayList<>();
+        folders.add(tree.get(0));
+        while (!folders.stream()
                 .filter(node -> node.getType().equals(Node.NodeType.FOLDER))
                 .collect(Collectors.toList()).isEmpty()) {
 
-            if (children.peek().getType() == Node.NodeType.FOLDER) {
-                Node node = children.remove();
+            if (folders.get(0).getType() == Node.NodeType.FOLDER) {
+                Node node = folders.remove(0);
 
                 node.getChildren().stream()
-                        .forEach(node1 -> children.add(node1));
+                        .filter(e -> e.getType().equals(Node.NodeType.FILE))
+                        .forEach(node1 -> result.add(node1));
+
+                node.getChildren().stream()
+                        .filter(e -> e.getType().equals(Node.NodeType.FOLDER))
+                        .forEach(node1 -> folders.add(node1));
             }
         }
-        return children;
+        return result;
     }
 }

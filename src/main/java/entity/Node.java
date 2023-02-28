@@ -16,17 +16,17 @@ public class Node {
     public enum NodeType {
         FILE, FOLDER
     }
-
+//todo add private Node predecessor;
     private String name;
-    private long size;
+    private double size;
     private NodeType type;
     private List<Node> children;
 
-    public long calcSize() {
+    public double calcSize() {
         return calcSize(this);
     }
 
-    public long calcSize(Node node) {
+    public double calcSize(Node node) {
         if (node.type == NodeType.FILE)
             return node.size;
 
